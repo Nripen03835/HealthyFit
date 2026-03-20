@@ -1,0 +1,12 @@
+.env
+venv/
+__pycache__/
+*.pyc
+instance/
+static/uploads/*
+!static/uploads/.gitkeep
+.pytest_cache/
+.vscode/
+.idea/
+.DS_Store
+healthcare.db
