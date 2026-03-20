@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="glass-panel">
+            <div class="d-flex align-items-center mb-4">
+                <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3 border border-primary border-opacity-25" style="width:60px; height:60px; display:flex; align-items:center; justify-content:center;">
+                    <span class="fs-3">💊</span>
+                </div>
+                <div>
+                    <h3 class="mb-1">Medicine Info Bot</h3>
+                    <p class="text-muted mb-0 small">Ask about any medicine or upload a picture of the label</p>
+                </div>
+            </div>
+            
+            <div class="chat-container mb-4" id="chat-box" style="background: rgba(0,0,0,0.3); border-radius: 16px; padding: 20px;">
+                <div class="message bot pb-1">
+                    <div class="fw-bold mb-1 text-primary small">System</div>
+                    Hello! I'm your AI health assistant. You can ask me about medicines, their uses, dosages, and side effects. You can also upload a clear photo of a medicine box/strip!
+                </div>
+            </div>
+            
+            <div class="d-flex gap-2 p-2 rounded-pill bg-dark" style="background: rgba(0,0,0,0.4) !important; border: 1px solid rgba(255,255,255,0.1);">
+                <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                <button type="button" class="btn btn-primary rounded-circle p-0 ms-1 d-flex align-items-center justify-content-center" style="width:40px; height:40px; flex-shrink:0;" id="upload-btn" title="Upload Image">
+                    <span class="fs-5">📷</span>
+                </button>
+                <input type="text" class="form-control border-0 bg-transparent text-white shadow-none" id="chat-input" placeholder="Type a medicine name..." autocomplete="off">
+                <button type="button" class="btn btn-primary rounded-pill px-4 me-1 border-0 fw-bold" id="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const chatBox = document.getElementById('chat-box');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const uploadBtn = document.getElementById('upload-btn');
+    const fileInput = document.getElementById('image-upload');
+    
+    function addMessage(sender, text, isHtml=false) {
+        const div = document.createElement('div');
+        div.className = `message ${sender}`;
+        
+        let header = '';
+        if (sender === 'bot') {
+            header = '<div class="fw-bold mb-1 text-primary small">AI Assistant</div>';
+        } else {
+            header = '<div class="fw-bold mb-1 small opacity-75 text-end">You</div>';
+        }
+
+        if (isHtml) {
+            div.innerHTML = header + text;
+        } else {
+            div.innerHTML = header + `<div>${text}</div>`;
+        }
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return div;
+    }
+    
+    function addLoader() {
+        const div = document.createElement('div');
+        div.className = 'message bot chatbot-loader pb-1 pt-3 px-4';
+        div.id = 'typing-loader';
+        div.innerHTML = '<span></span><span></span><span></span>';
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    
+    function removeLoader() {
+        const loader = document.getElementById('typing-loader');
+        if (loader) loader.remove();
+    }
+    
+    function formatMedicine(med) {
+        return `
+            <div class="mt-2 p-3 rounded" style="background: rgba(0,229,255,0.05); border-left: 3px solid var(--primary);">
+                <div class="mb-2 fs-5"><strong class="text-white">${med.name}</strong></div>
+                <div class="mb-1"><strong class="text-primary opacity-75">Uses:</strong> ${med.uses}</div>
+                <div class="mb-1"><strong class="text-primary opacity-75">Dosage:</strong> ${med.dosage}</div>
+                <div class="mb-1"><strong class="text-primary opacity-75">Side Effects:</strong> <span class="text-danger opacity-75">${med.side_effects}</span></div>
+                <div class="mb-0"><strong class="text-primary opacity-75">Precautions:</strong> <span class="text-warning opacity-75">${med.precautions}</span></div>
+            </div>
+        `;
+    }
+
+    function processQuery(query) {
+        addMessage('user', query);
+        chatInput.value = '';
+        addLoader();
+        
+        fetch('{{ url_for("chatbot_api") }}', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({query: query})
+        })
+        .then(res => res.json())
+        .then(data => {
+            removeLoader();
+            if (data.error) {
+                addMessage('bot', data.error);
+            } else {
+                addMessage('bot', formatMedicine(data), true);
+            }
+        })
+        .catch(err => {
+            removeLoader();
+            addMessage('bot', 'Sorry, an error occurred communicating with the server.');
+        });
+    }
+    
+    sendBtn.addEventListener('click', () => {
+        const text = chatInput.value.trim();
+        if (text) processQuery(text);
+    });
+    
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const text = chatInput.value.trim();
+            if (text) processQuery(text);
+        }
+    });
+    
+    uploadBtn.addEventListener('click', () => {
+        fileInput.click();
+    });
+    
+    fileInput.addEventListener('change', () => {
+        const file = fileInput.files[0];
+        if (!file) return;
+        
+        addMessage('user', '📷 Uploaded image... processing text');
+        addLoader();
+        
+        const formData = new FormData();
+        formData.append('image', file);
+        
+        fetch('{{ url_for("chatbot_upload_image") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            removeLoader();
+            fileInput.value = ''; // Reset
+            if (data.error) {
+                addMessage('bot', data.error);
+            } else {
+                addMessage('bot', `I detected the text "<span class="text-primary fw-bold">${data.detected_text}</span>". Here is what I found:`, true);
+                addMessage('bot', formatMedicine(data), true);
+            }
+        })
+        .catch(err => {
+            removeLoader();
+            fileInput.value = '';
+            addMessage('bot', 'Sorry, image processing failed. The service might be temporarily unavailable.');
+        });
+    });
+});
+</script>
+{% endblock %}

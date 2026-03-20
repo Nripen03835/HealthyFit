@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center pt-4">
+    <div class="col-md-8 col-lg-6">
+        <div class="glass-panel">
+            <h3 class="mb-4">Update Profile</h3>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-4">
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control") }}
+                </div>
+                <div class="row mb-4">
+                    <div class="col-4">
+                        {{ form.age.label(class="form-label") }}
+                        {{ form.age(class="form-control") }}
+                    </div>
+                    <div class="col-4">
+                        {{ form.current_weight.label(class="form-label") }}
+                        {{ form.current_weight(class="form-control") }}
+                    </div>
+                    <div class="col-4">
+                        {{ form.target_weight.label(class="form-label") }}
+                        {{ form.target_weight(class="form-control") }}
+                    </div>
+                </div>
+                <div class="mb-4">
+                    {{ form.body_structure.label(class="form-label") }}
+                    {{ form.body_structure(class="form-select") }}
+                </div>
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary px-4 py-2">Cancel</a>
+                    {{ form.submit(class="btn btn-primary px-4 py-2 border-0") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

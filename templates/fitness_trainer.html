@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="glass-panel text-center mb-4 pb-3">
+            <h2 class="mb-2">AI Bodyweight Trainer</h2>
+            <p class="text-muted px-md-5">Generate a personalized no-equipment workout plan tailored to your body type and fitness goals.</p>
+        </div>
+        
+        <div class="glass-panel p-md-5 rounded-4 position-relative overflow-hidden">
+            <div class="position-absolute top-0 start-0 opacity-10" style="width:250px; height:250px; background:radial-gradient(circle, var(--accent) 0%, transparent 70%); transform:translate(-30%, -30%); z-index:0;"></div>
+            
+            <form method="POST" class="position-relative" style="z-index: 1;">
+                {{ form.hidden_tag() }}
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        {{ form.current_weight.label(class="form-label text-primary fw-bold") }}
+                        {{ form.current_weight(class="form-control bg-dark bg-opacity-50 border-secondary p-3") }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.target_weight.label(class="form-label text-primary fw-bold") }}
+                        {{ form.target_weight(class="form-control bg-dark bg-opacity-50 border-secondary p-3") }}
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        {{ form.body_structure.label(class="form-label text-primary fw-bold") }}
+                        {{ form.body_structure(class="form-select bg-dark bg-opacity-50 border-secondary p-3") }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.fitness_level.label(class="form-label text-primary fw-bold") }}
+                        {{ form.fitness_level(class="form-select bg-dark bg-opacity-50 border-secondary p-3") }}
+                    </div>
+                </div>
+                
+                <div class="mb-5">
+                    {{ form.health_issues.label(class="form-label text-primary fw-bold") }}
+                    {{ form.health_issues(class="form-control bg-dark bg-opacity-50 border-secondary p-3", rows="3", placeholder="e.g. Bad knees, lower back pain... The AI will tailor your plan around this.") }}
+                </div>
+                
+                <div class="text-center">
+                    {{ form.submit(class="btn btn-primary btn-lg px-5 py-3 rounded-pill w-100 fw-bold border-0 shadow-lg fs-5") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

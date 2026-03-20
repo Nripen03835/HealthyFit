@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1">Your Bodyweight Plan</h2>
+                <p class="text-muted m-0 small text-uppercase tracking-widest fw-bold">No Equipment Required</p>
+            </div>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary rounded-pill px-4">Save & Go to Dashboard</a>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="glass-panel h-100 border border-primary border-opacity-25 sticky-top" style="top: 100px; z-index: 1; box-shadow: inset 0 0 50px rgba(0, 229, 255, 0.05);">
+                    <div class="text-center mb-4">
+                        <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex p-3 mb-2 text-primary fs-3">
+                            🍎
+                        </div>
+                        <h4 class="text-primary mt-2">Nutrition Targets</h4>
+                    </div>
+                    
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted fw-bold">Calories</span>
+                            <strong class="fs-4 text-white">{{ plan.nutrition.calories }}</strong>
+                        </li>
+                        <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted fw-bold">Protein</span>
+                            <strong class="text-primary">{{ plan.nutrition.protein }}</strong>
+                        </li>
+                        <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted fw-bold">Carbs</span>
+                            <strong class="text-warning">{{ plan.nutrition.carbs }}</strong>
+                        </li>
+                        <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted fw-bold">Fats</span>
+                            <strong class="text-danger">{{ plan.nutrition.fats }}</strong>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-8">
+                <div class="glass-panel mb-4 p-md-4 border border-primary border-opacity-50 text-center" style="background: rgba(0,229,255,0.05);">
+                    <h5 class="text-primary mb-2">🔥 AI Trainer Advice</h5>
+                    <div class="badge bg-dark bg-opacity-50 border border-secondary mb-3">Powered by TinyLlama-Fitness-Instructor</div>
+                    <p class="text-light mb-0 fst-italic fs-5">"{{ plan.ai_advice }}"</p>
+                </div>
+
+                <div class="glass-panel mb-4 p-md-4 border border-secondary border-opacity-25">
+                    <h4 class="text-primary mb-4 d-flex align-items-center"><span class="bg-primary bg-opacity-10 p-2 rounded me-3 fs-5">🏃</span> Warm-up Routine</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for w in plan.warmup %}
+                        <span class="badge rounded-pill bg-dark border border-secondary p-3 text-light">{{ w }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="glass-panel mb-4 p-md-4 border border-secondary border-opacity-25">
+                    <h4 class="text-primary mb-4 d-flex align-items-center"><span class="bg-primary bg-opacity-10 p-2 rounded me-3 fs-5">🔥</span> The Workout</h4>
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover mb-0" style="background: transparent;">
+                            <thead>
+                                <tr>
+                                    <th class="border-secondary text-muted fw-normal py-3 border-opacity-50">Exercise</th>
+                                    <th class="border-secondary text-muted fw-normal text-center py-3 border-opacity-50">Sets</th>
+                                    <th class="border-secondary text-muted fw-normal text-center py-3 border-opacity-50">Reps / Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for w in plan.workout %}
+                                <tr>
+                                    <td class="border-secondary border-opacity-25 py-3 fw-bold align-middle">{{ w.exercise }}</td>
+                                    <td class="border-secondary border-opacity-25 py-3 text-center align-middle">
+                                        <span class="text-white px-2 py-1 rounded bg-dark border border-secondary">{{ w.sets }}</span>
+                                    </td>
+                                    <td class="border-secondary border-opacity-25 py-3 text-center text-primary fs-5 align-middle">{{ w.reps }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="glass-panel mb-4 p-md-4 border border-secondary border-opacity-25">
+                    <h4 class="text-primary mb-4 d-flex align-items-center"><span class="bg-primary bg-opacity-10 p-2 rounded me-3 fs-5">🧘‍♂️</span> Cool-down</h4>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for c in plan.cooldown %}
+                        <span class="badge rounded-pill bg-dark border border-secondary p-3 text-light">{{ c }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

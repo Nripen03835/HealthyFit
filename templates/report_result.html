@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-4 d-flex justify-content-between align-items-center">
+    <div>
+        <h2 class="mb-1">Analysis Results</h2>
+        <p class="text-muted m-0 small">Based on: {{ report.filename }}</p>
+    </div>
+    <a href="{{ url_for('report_analyzer') }}" class="btn btn-outline-primary rounded-pill px-4">Analyze Another</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="glass-panel h-100 p-md-5">
+            <div class="d-flex align-items-center mb-4">
+                <div class="bg-primary bg-opacity-10 p-2 rounded me-3 text-primary fs-4">📝</div>
+                <h4 class="text-white mb-0">Summary</h4>
+            </div>
+            <div class="bg-dark bg-opacity-50 p-4 rounded-4 mb-5 border border-secondary border-opacity-50" style="line-height: 1.8; white-space: pre-wrap; font-size: 1.05rem;">{{ report.summary }}</div>
+            
+            <div class="d-flex align-items-center mb-4 mt-2">
+                <div class="bg-primary bg-opacity-10 p-2 rounded me-3 text-primary fs-4">🔍</div>
+                <h4 class="text-white mb-0">Key Terms Explained</h4>
+            </div>
+            <div class="bg-dark bg-opacity-50 p-4 rounded-4 border border-secondary border-opacity-50" style="line-height: 1.8; white-space: pre-wrap; font-size: 1.05rem;">{{ explanation }}</div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="glass-panel text-center h-100 d-flex flex-column align-items-center justify-content-center py-5">
+            <h5 class="text-muted mb-4 tracking-widest text-uppercase small">AI Recommendation</h5>
+            
+            {% if 'consult' in report.recommendation.lower() %}
+            <div class="bg-danger bg-opacity-10 border border-danger border-opacity-50 rounded-circle d-flex align-items-center justify-content-center mb-4 shadow position-relative" style="width: 140px; height: 140px;">
+                <div class="position-absolute w-100 h-100 rounded-circle border border-danger opacity-25" style="animation: pulse 2s infinite;"></div>
+                <span style="font-size: 4rem;">⚠️</span>
+            </div>
+            <h3 class="text-danger mb-3 fw-bold">Consult a Doctor</h3>
+            {% else %}
+            <div class="bg-success bg-opacity-10 border border-success border-opacity-50 rounded-circle d-flex align-items-center justify-content-center mb-4 shadow position-relative" style="width: 140px; height: 140px;">
+                <div class="position-absolute w-100 h-100 rounded-circle border border-success opacity-25" style="animation: pulse 2s infinite;"></div>
+                <span style="font-size: 4rem;">✅</span>
+            </div>
+            <h3 class="text-success mb-3 fw-bold">No Immediate Action</h3>
+            {% endif %}
+            
+            <p class="text-muted mt-2 px-4" style="line-height: 1.6;">{{ report.recommendation }}</p>
+            
+            <div class="mt-auto pt-5 w-100 px-4">
+                <div class="alert alert-warning bg-transparent border-warning border-opacity-25 text-start small">
+                    <strong class="d-block mb-1 text-warning">Disclaimer:</strong>
+                    This analysis is provided by an AI algorithm and is strictly for informational purposes. It does not replace professional medical advice, diagnosis, or treatment.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.15); opacity: 0; }
+    100% { transform: scale(1); opacity: 0; }
+}
+</style>
+{% endblock %}

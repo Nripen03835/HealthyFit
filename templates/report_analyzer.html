@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="glass-panel text-center mb-4 pb-3">
+            <h2 class="mb-3">AI Report Analyzer</h2>
+            <p class="text-muted px-md-5">Upload your medical report and let our AI translate complex medical jargon into plain English. Supports PDF, DOCX, TXT, and Images.</p>
+        </div>
+        
+        <div class="glass-panel p-4 p-md-5 rounded-4 position-relative overflow-hidden">
+            <!-- Decorative circle -->
+            <div class="position-absolute top-0 end-0 opacity-10" style="width:300px; height:300px; background:radial-gradient(circle, var(--primary) 0%, transparent 70%); transform:translate(30%, -30%); z-index:0;"></div>
+            
+            <form method="POST" enctype="multipart/form-data" class="position-relative" style="z-index: 1;">
+                {{ form.hidden_tag() }}
+                <div class="mb-4">
+                    <label class="form-label d-block text-primary fw-bold mb-3 fs-5">1. Upload File</label>
+                    <div class="border border-secondary border-dashed border-2 rounded-4 p-5 text-center position-relative transition-all" style="border-style: dashed !important; background: rgba(0,0,0,0.3); transition: all 0.3s;" id="dropzone">
+                        <div class="mb-3 fs-1 opacity-50 text-white">🗂️</div>
+                        <h5 class="text-white mb-2">Drag & Drop Your Report</h5>
+                        <p class="text-muted small mb-0">or click to browse local files</p>
+                        {{ form.report(class="form-control opacity-0 position-absolute top-0 start-0 w-100 h-100", style="cursor: pointer; z-index: 2;", id="reportFile") }}
+                        <div id="fileName" class="text-primary fw-bold mt-3 p-2 rounded bg-primary bg-opacity-10 d-none"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center position-relative mb-4 py-3">
+                    <hr class="border-secondary opacity-50">
+                    <span class="position-absolute top-50 start-50 translate-middle px-3 text-muted small fw-bold tracking-widest" style="background: var(--bg-panel); border-radius: 8px;">OR</span>
+                </div>
+                
+                <div class="mb-5">
+                    {{ form.text_content.label(class="form-label text-primary fw-bold mb-3 fs-5") }}
+                    {{ form.text_content(class="form-control rounded-4 p-3 border-secondary", rows="6", placeholder="Paste medical text here...", style="background: rgba(0,0,0,0.3); color: #fff;") }}
+                </div>
+                
+                <div class="text-center">
+                    {{ form.submit(class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-lg border-0 fw-bold fs-5 w-100 position-relative", id="analyzeBtn") }}
+                </div>
+            </form>
+        </div>
+        
+        <!-- Loading UI -->
+        <div id="loadingOverlay" class="d-none mt-5 text-center">
+            <div class="spinner-border text-primary border-4" role="status" style="width: 4rem; height: 4rem;"></div>
+            <h4 class="mt-4 text-white">Analyzing with AI...</h4>
+            <p class="text-muted">Extracting data and translating medical terms into plain English.<br>This may take up to 30 seconds.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const reportFile = document.getElementById('reportFile');
+    const fileName = document.getElementById('fileName');
+    const dropzone = document.getElementById('dropzone');
+    
+    reportFile.addEventListener('change', function(e) {
+        if(e.target.files.length > 0) {
+            fileName.innerText = "Selected File: " + e.target.files[0].name;
+            fileName.classList.remove('d-none');
+            dropzone.style.borderColor = 'var(--primary)';
+        } else {
+            fileName.classList.add('d-none');
+            dropzone.style.borderColor = '';
+        }
+    });
+
+    document.getElementById('analyzeBtn').addEventListener('click', function(e) {
+        setTimeout(() => {
+            document.getElementById('loadingOverlay').classList.remove('d-none');
+            // Hide the form to show cleaner loading
+            document.querySelector('.glass-panel form').style.opacity = '0.5';
+            document.querySelector('.glass-panel form').style.pointerEvents = 'none';
+        }, 100); 
+    });
+</script>
+{% endblock %}

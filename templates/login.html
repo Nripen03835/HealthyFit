@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="glass-panel">
+            <div class="text-center mb-4">
+                <div class="mx-auto mb-3" style="width: 60px; height: 60px; background: rgba(0, 229, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                </div>
+                <h2>Welcome Back</h2>
+                <p class="text-muted">Sign in to continue your journey</p>
+            </div>
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <div class="form-floating mb-3">
+                    {{ form.email(class="form-control", id="email", placeholder="name@example.com") }}
+                    {{ form.email.label(for="email") }}
+                    {% if form.email.errors %}
+                        <div class="text-danger small mt-1">{% for error in form.email.errors %}{{ error }}{% endfor %}</div>
+                    {% endif %}
+                </div>
+                <div class="form-floating mb-4">
+                    {{ form.password(class="form-control", id="password", placeholder="Password") }}
+                    {{ form.password.label(for="password") }}
+                    {% if form.password.errors %}
+                        <div class="text-danger small mt-1">{% for error in form.password.errors %}{{ error }}{% endfor %}</div>
+                    {% endif %}
+                </div>
+                <div class="form-check mb-4">
+                    {{ form.remember(class="form-check-input bg-transparent border-secondary", id="remember") }}
+                    {{ form.remember.label(class="form-check-label text-muted", for="remember") }}
+                </div>
+                {{ form.submit(class="btn btn-primary w-100 py-3 mb-3 border-0") }}
+            </form>
+            <div class="text-center">
+                <span class="text-muted">Don't have an account? </span>
+                <a href="{{ url_for('register') }}" class="text-primary text-decoration-none">Register here</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

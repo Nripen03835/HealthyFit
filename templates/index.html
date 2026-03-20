@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row min-vh-75 align-items-center py-5">
+    <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0">
+        <div class="d-inline-block px-3 py-2 rounded-pill mb-3" style="background: rgba(0, 229, 255, 0.1); border: 1px solid rgba(0, 229, 255, 0.2); color: var(--primary);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1 mb-1"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+            AI-Powered Healthcare & Fitness
+        </div>
+        <h1 class="hero-title">Elevate Your<br>Health Journey</h1>
+        <p class="hero-subtitle">
+            Experience the future of personal wellness. From intelligent medical report analysis to 3D gym coaching and AI medicine guidance, HealthyFit is your ultimate companion.
+        </p>
+        <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center justify-content-lg-start">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill">Go to Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill">Start for Free</a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg px-4 py-3 rounded-pill">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="glass-panel text-center p-4">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-100" style="max-height: 400px; filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));">
+              <path fill="#0a0e17" stroke="#00e5ff" stroke-width="2" d="M47.7,-57.2C59.6,-45.3,65.5,-27.2,65.9,-9.5C66.3,8.3,61.1,25.6,49.9,37.3C38.7,49.1,21.5,55.3,3.7,50.9C-14.1,46.5,-32.8,31.6,-45.2,13.7C-57.6,-4.2,-63.8,-25.1,-56,-39.8C-48.2,-54.5,-26.4,-63,-9,-52.4C8.4,-41.8,26.8,-12,35.8,-68.1Z" transform="translate(100 100) scale(1.1)" />
+              <g transform="translate(100 100)">
+                 <circle r="40" fill="rgba(10,14,23,0.8)" stroke="#ff2a6d" stroke-width="2"/>
+                 <path d="M-15,-5 L15,-5 L0,20 Z" fill="#ff2a6d" opacity="0.8"/>
+                 <path d="M-20,0 L20,0 L0,-25 Z" fill="#00e5ff" opacity="0.9"/>
+                 <circle r="45" fill="none" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1" stroke-dasharray="5 5">
+                   <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="10s" repeatCount="indefinite"/>
+                 </circle>
+              </g>
+            </svg>
+            <h4 class="mt-4 mb-2">Next-Gen Intelligence</h4>
+            <p class="text-muted mb-0">Powered by advanced LLMs and 3D Visualization</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-5">
+    <div class="col-md-4">
+        <div class="glass-panel text-center h-100">
+            <div class="d-inline-flex justify-content-center align-items-center mb-3 text-primary fs-1">
+                🤖
+            </div>
+            <h4>Smart Chatbot</h4>
+            <p class="text-muted small">Upload prescriptions or ask directly. Get accurate medicine info instantly using OCR and DB search.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-panel text-center h-100">
+            <div class="d-inline-flex justify-content-center align-items-center mb-3 text-primary fs-1">
+                📑
+            </div>
+            <h4>Report Analyzer</h4>
+            <p class="text-muted small">Let OpenAI decipher your medical jargon. Understand your health reports in simple bullet points.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="glass-panel text-center h-100">
+            <div class="d-inline-flex justify-content-center align-items-center mb-3 text-primary fs-1">
+                🏋️‍♂️
+            </div>
+            <h4>3D Gym Trainer</h4>
+            <p class="text-muted small">Visualize exercises in high-fidelity 3D. We craft tailored workout splits just for your body.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

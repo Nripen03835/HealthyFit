@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="animate-fade-in" style="margin-top: 20px;">
+    <div class="row justify-content-center">
+        <div class="col-xl-9 col-lg-10">
+
+            <!-- Header -->
+            <div class="d-flex align-items-center mb-4 gap-3">
+                <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0"
+                     style="width:56px;height:56px;background:linear-gradient(135deg,var(--primary),#7b2ff7);">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="mb-0 fw-bold text-white" style="font-size:1.6rem;">FitBuddy <span style="color:var(--primary)">AI</span></h2>
+                    <p class="mb-0 text-muted small">Your all-round fitness & health companion — powered by Groq llama</p>
+                </div>
+                <div class="ms-auto">
+                    <span class="badge rounded-pill px-3 py-2 fw-semibold"
+                          style="background:rgba(0,229,255,0.12);color:var(--primary);border:1px solid rgba(0,229,255,0.3);letter-spacing:.07em;font-size:.7rem;">
+                        GROQ · LLAMA 3
+                    </span>
+                </div>
+            </div>
+
+            <!-- Chat Card -->
+            <div class="glass-panel p-0 overflow-hidden position-relative"
+                 style="border:1px solid rgba(255,255,255,0.08); border-radius:16px;">
+
+                <!-- Suggested prompts bar -->
+                <div class="px-4 py-3 d-flex gap-2 flex-wrap"
+                     style="background:rgba(0,0,0,0.3);border-bottom:1px solid rgba(255,255,255,0.06);">
+                    <button class="btn btn-sm rounded-pill suggestion-btn"
+                            style="background:rgba(0,229,255,0.1);color:var(--primary);border:1px solid rgba(0,229,255,0.25);font-size:.78rem;">
+                        💪 Best chest workout?
+                    </button>
+                    <button class="btn btn-sm rounded-pill suggestion-btn"
+                            style="background:rgba(0,229,255,0.1);color:var(--primary);border:1px solid rgba(0,229,255,0.25);font-size:.78rem;">
+                        🥗 High-protein breakfast ideas
+                    </button>
+                    <button class="btn btn-sm rounded-pill suggestion-btn"
+                            style="background:rgba(0,229,255,0.1);color:var(--primary);border:1px solid rgba(0,229,255,0.25);font-size:.78rem;">
+                        🔥 Burn belly fat fast
+                    </button>
+                    <button class="btn btn-sm rounded-pill suggestion-btn"
+                            style="background:rgba(0,229,255,0.1);color:var(--primary);border:1px solid rgba(0,229,255,0.25);font-size:.78rem;">
+                        😴 Sleep & muscle recovery
+                    </button>
+                </div>
+
+                <!-- Messages -->
+                <div id="chatWindow"
+                     style="height:490px;overflow-y:auto;padding:28px 24px;scroll-behavior:smooth;
+                            background:radial-gradient(ellipse at top left,rgba(0,229,255,0.03) 0%,transparent 60%);">
+
+                    <!-- Welcome message -->
+                    <div class="d-flex align-items-start gap-3 mb-4" id="welcomeMsg">
+                        <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center"
+                             style="width:38px;height:38px;background:linear-gradient(135deg,var(--primary),#7b2ff7);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <div style="max-width:75%;">
+                            <div class="small fw-semibold mb-1" style="color:var(--primary);">FitBuddy</div>
+                            <div class="p-3 rounded-3 text-white"
+                                 style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);line-height:1.6;border-top-left-radius:4px!important;">
+                                👋 Hey! I'm <strong>FitBuddy</strong> — your all-rounder AI for fitness, nutrition, recovery and health.<br><br>
+                                Ask me anything — workouts, meal plans, supplements, injuries, motivation — I've got you! 💪
+                            </div>
+                            <div class="text-muted mt-1" style="font-size:.72rem;">Just now</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input bar -->
+                <div class="px-4 py-3 d-flex gap-3 align-items-center"
+                     style="background:rgba(0,0,0,0.35);border-top:1px solid rgba(255,255,255,0.07);">
+                    <input id="userInput" type="text"
+                           class="form-control border-0 text-white"
+                           placeholder="Ask FitBuddy anything about fitness or health…"
+                           autocomplete="off"
+                           style="background:rgba(255,255,255,0.07);border-radius:12px;padding:13px 18px;
+                                  font-size:.95rem;color:#fff;outline:none;box-shadow:none;">
+                    <button id="sendBtn" onclick="sendMessage()"
+                            class="btn d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width:48px;height:48px;border-radius:12px;
+                                   background:linear-gradient(135deg,var(--primary),#7b2ff7);border:none;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <p class="text-center text-muted mt-3" style="font-size:.75rem;">
+                FitBuddy may make mistakes. Always consult a professional for medical advice.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Loader template -->
+<template id="loaderTemplate">
+    <div class="d-flex align-items-start gap-3 mb-4" id="botLoadingMsg">
+        <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center"
+             style="width:38px;height:38px;background:linear-gradient(135deg,var(--primary),#7b2ff7);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+        </div>
+        <div style="max-width:75%;">
+            <div class="small fw-semibold mb-1" style="color:var(--primary);">FitBuddy</div>
+            <div class="p-3 rounded-3" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);">
+                <div class="chatbot-loader m-0"><span></span><span></span><span></span></div>
+            </div>
+        </div>
+    </div>
+</template>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const chatWindow = document.getElementById('chatWindow');
+    const userInput  = document.getElementById('userInput');
+    const sendBtn    = document.getElementById('sendBtn');
+
+    // Suggestion chips
+    document.querySelectorAll('.suggestion-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            userInput.value = btn.textContent.replace(/^.\s/, '').trim();
+            userInput.focus();
+            sendMessage();
+        });
+    });
+
+    userInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+    function getTime() {
+        return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    }
+
+    async function sendMessage() {
+        const query = userInput.value.trim();
+        if (!query) return;
+
+        appendUserMessage(query);
+        userInput.value = '';
+        sendBtn.disabled = true;
+        showLoader();
+
+        try {
+            const res  = await fetch("{{ url_for('fitbuddy_api') }}", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({query})
+            });
+            const data = await res.json();
+            hideLoader();
+            sendBtn.disabled = false;
+
+            if (data.error) {
+                appendBotMessage(`<span class="text-danger">⚠️ ${data.error}</span>`);
+            } else {
+                appendBotMessage(data.response.replace(/\n/g, '<br>'));
+            }
+        } catch (err) {
+            hideLoader();
+            sendBtn.disabled = false;
+            appendBotMessage('<span class="text-danger">⚠️ Network error — please try again.</span>');
+        }
+    }
+
+    function appendUserMessage(text) {
+        chatWindow.insertAdjacentHTML('beforeend', `
+            <div class="d-flex flex-row-reverse align-items-start gap-3 mb-4">
+                <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:38px;height:38px;background:rgba(0,229,255,0.2);border:1px solid rgba(0,229,255,0.3);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+                <div style="max-width:75%;">
+                    <div class="small fw-semibold mb-1 text-end" style="color:#adb5bd;">You</div>
+                    <div class="p-3 rounded-3 text-white text-end"
+                         style="background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.2);line-height:1.6;border-top-right-radius:4px!important;">
+                        ${escapeHtml(text)}
+                    </div>
+                    <div class="text-muted mt-1 text-end" style="font-size:.72rem;">${getTime()}</div>
+                </div>
+            </div>`);
+        scrollToBottom();
+    }
+
+    function appendBotMessage(html) {
+        chatWindow.insertAdjacentHTML('beforeend', `
+            <div class="d-flex align-items-start gap-3 mb-4">
+                <div class="flex-shrink-0 rounded-circle d-flex align-items-center justify-content-center"
+                     style="width:38px;height:38px;background:linear-gradient(135deg,var(--primary),#7b2ff7);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                </div>
+                <div style="max-width:78%;">
+                    <div class="small fw-semibold mb-1" style="color:var(--primary);">FitBuddy</div>
+                    <div class="p-3 rounded-3 text-white"
+                         style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);line-height:1.75;border-top-left-radius:4px!important;">
+                        ${html}
+                    </div>
+                    <div class="text-muted mt-1" style="font-size:.72rem;">${getTime()}</div>
+                </div>
+            </div>`);
+        scrollToBottom();
+    }
+
+    function showLoader() {
+        const clone = document.getElementById('loaderTemplate').content.cloneNode(true);
+        chatWindow.appendChild(clone);
+        scrollToBottom();
+    }
+
+    function hideLoader() {
+        const el = document.getElementById('botLoadingMsg');
+        if (el) el.remove();
+    }
+
+    function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+        const d = document.createElement('div');
+        d.appendChild(document.createTextNode(str));
+        return d.innerHTML;
+    }
+</script>
+{% endblock %}
