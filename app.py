@@ -309,7 +309,7 @@ def get_exercise_video(exercise_name):
     url = "https://google-search74.p.rapidapi.com/"
     querystring = {"query": f"site:youtube.com {exercise_name} form tutorial", "limit": "1"}
     headers = {
-        "x-rapidapi-key": "299d9e1be8mshdfb1c621e0a9f7cp1b7569jsn78a271d8cb23",
+        "x-rapidapi-key": app.config['RAPIDAPI_KEY'],
         "x-rapidapi-host": "google-search74.p.rapidapi.com"
     }
     try:

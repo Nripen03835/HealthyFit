@@ -14,3 +14,4 @@ class Config:
     GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
     FITBUDDY_GROQ_KEY = os.environ.get('FITBUDDY_GROQ_KEY')
     FITBUDDY_OPENAI_KEY = os.environ.get('FITBUDDY_OPENAI_KEY')
+    RAPIDAPI_KEY = os.environ.get('RAPIDAPI_KEY')
