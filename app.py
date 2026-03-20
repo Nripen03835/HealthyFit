@@ -24,7 +24,14 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# Configure uploads for Vercel environment (using /tmp)
+if os.environ.get('VERCEL'):
+    app.config['UPLOAD_FOLDER'] = os.path.join('/tmp', 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+# Ensure DB is initialized for serverless environments
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def index():
@@ -347,6 +354,5 @@ def profile():
     return render_template('profile.html', form=form)
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
+
